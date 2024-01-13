@@ -5,11 +5,12 @@ import pygame
 from settings import Settings
 from ship import Ship
 
+
 class AlienInvasion:
     """Клас для управління ресурсами та поведінкою гри"""
 
     def __init__(self):
-        """Інцилізацує гру та створює ігрові ресурси"""
+        """Ініціалізує гру та створює ігрові ресурси"""
         pygame.init()
         self.settings = Settings()
 
@@ -23,21 +24,26 @@ class AlienInvasion:
     def run_game(self):
         """Запуск основного циклу гри"""
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-            
-            self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
-            
-            pygame.display.flip()
-    
+            # Відслідковування подій клавіфатури та миші
+            self._check_events()
+            # За кожної ітерації циклу перемалбовується екран
+            self._update_screen()
+
     def _check_events(self):
-        """Обробляє натиснення клавіщ та події миші"""
+        """Обробляє натиснеяння клавіш та події миші"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
+    def _update_screen(self):
+        """ "Оновлює зображення на екрані та відображає новий екран"""
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+        # Відображення останнього прорисованого екрану
+        pygame.display.flip()
+
+
 if __name__ == "__main__":
+    # Створення екземпляру та запуск гри
     ai = AlienInvasion()
     ai.run_game()
