@@ -31,6 +31,12 @@ class AlienInvasion:
             self.ship.blitme()
             
             pygame.display.flip()
+    
+    def _check_events(self):
+        """Обробляє натиснення клавіщ та події миші"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
 
 if __name__ == "__main__":
     ai = AlienInvasion()
