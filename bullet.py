@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 from pygame.sprite import Sprite
 
@@ -18,3 +19,13 @@ class Bullet(Sprite):
 
         # Save bullet position in float
         self.y = float(self.rect.y)
+
+    def update(self):
+        """Move bullet in up for screen"""
+        self.y -= self.settings.bullet_speed
+        self.rect.y = self.y
+
+    def draw_bullet(self):
+        """Вивоже снаряд на екран"""
+        pygame.draw.rect(self.screen, self.color, self.rect)
+        
