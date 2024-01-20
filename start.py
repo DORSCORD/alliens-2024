@@ -29,17 +29,18 @@ class AlienInvasion:
             # Відслідковування подій клавіфатури та миші
             self._check_events()
             self.ship.update()
-            self.bullets.update()
-
-            #delate bullet who out screen
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-            print(len(self.bullets))
+            self._update_bullets()
 
 
             # За кожної ітерації циклу перемалбовується екран
             self._update_screen()
+
+    def _update_bullets(self):
+        self.bullets.update()
+        
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _check_events(self):
         """Обробляє натиснеяння клавіш та події миші"""
