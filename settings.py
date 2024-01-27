@@ -1,18 +1,19 @@
 class Settings:
-    """Класс для збереження всіх налаштувань гри"""
+    """Клас для збереження всін налаштувань гри"""
 
     def __init__(self):
-        """Ініціалізує налаштуваннь гри"""
+        """Ініціалізує налаштування гри"""
+        # Параметри екрану
         self.screen_width = 1200
         self.screen_height = 800
         self.bg_color = (230, 230, 230)
 
-        # Парметри коробля
+        # Параметри корабля
         self.ship_speed = 1.5
 
-        #Параметри снаряду
+        # Параметри снаряду
         self.bullet_speed = 1
-        self.bulley_width = 3
+        self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
-        self.bullet_allowed = 3
+        self.bulets_allowed = 3

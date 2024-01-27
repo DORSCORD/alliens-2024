@@ -1,19 +1,22 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Alien(Sprite):
+    """Клас для прибульця"""
 
     def __init__(self, ai_game):
+        """Ініціалізує прибульця та задає його початкову позицію"""
         super().__init__()
         self.screen = ai_game.screen
 
-        #Download image alien and rect
+        # Завантаження зображення прибульця та визначення rect
         self.image = pygame.image.load("Image/alien.bmp")
         self.rect = self.image.get_rect()
 
-        #Every alien spawn in left-up screen
+        # Кожен новий прибулець з'являється в лівому верхньому куті екрану
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
 
-        #Save gorizontale position alien
+        # Збереження точної горизонтальної позиції прибульця
         self.x = float(self.rect.x)
