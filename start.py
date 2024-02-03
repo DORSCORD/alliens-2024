@@ -37,9 +37,11 @@ class AlienInvasion:
         while True:
             # Відслідковування подій клавіфатури та миші
             self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
+
+            if self.stats.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
 
             # За кожної ітерації циклу перемальовується екран
             self._update_screen()
@@ -131,17 +133,20 @@ class AlienInvasion:
 
     def _ship_hit(self):
         """Обробляє зіткхнення коробля з прибульцем"""
-        self.stats.ships_left -= 1
-        #Очищення списків прибульців та снарядів
-        self.aliens.empty()
-        self.bullets.empty()
+        if  self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
+            #Очищення списків прибульців та снарядів
+            self.aliens.empty()
+            self.bullets.empty()
 
-        # Add new fleet and centr ship
-        self._create_fleet()
-        self.ship.center_ship()
+            # Add new fleet and centr ship
+            self._create_fleet()
+            self.ship.center_ship()
 
-        #Pause
-        sleep(0.5)
+            #Pause
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
 
     def _update_aliens(self):
         """Оновлює позиції всіх прибульців флоту"""
