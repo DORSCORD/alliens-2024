@@ -120,6 +120,8 @@ class AlienInvasion:
         """Оновлює позиції всіх прибульців флоту"""
         self._check_fleet_edges()
         self.aliens.update()
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship hit!!!")
 
     def _update_bullets(self):
         """Оновлює позиції снарядів"""
@@ -130,8 +132,10 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
         #Upadate shoot to alien
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        self._check_bullet_collisons()
 
+    def _check_bullet_collisons(self):
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
