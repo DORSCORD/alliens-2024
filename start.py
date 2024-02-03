@@ -132,6 +132,10 @@ class AlienInvasion:
         #Upadate shoot to alien
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
+
     def _update_screen(self):
         """Оновлює зображення на екрані та відображає новий екран"""
         self.screen.fill(self.settings.bg_color)
