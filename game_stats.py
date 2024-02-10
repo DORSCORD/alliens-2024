@@ -6,8 +6,8 @@ class GameStats():
         self.settings = ai_game.settings
         self.reset_stats()
 
-        # Game started in active 
-        self.game_active = True
+        # Game started in no active 
+        self.game_active = False
     
     def reset_stats(self):
         """Ініціалізує статистику, що змінюється під час гри"""
