@@ -118,6 +118,9 @@ class AlienInvasion:
             self._create_fleet()
             self.ship.center_ship()
 
+            # Вказівка миші приховуєтся 
+            pygame.mouse.set_visible(False)
+
     def _create_alien(self, alien_number, row_number):
         # Створення прибульця і розміщення його в ряду
         alien = Alien(self)
@@ -170,6 +173,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _update_aliens(self):
         """Оновлює позиції всіх прибульців флоту"""
