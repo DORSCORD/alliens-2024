@@ -35,6 +35,9 @@ class Settings:
         # fleet_direction = 1 якщо флот рухаєтся праворуч, -1, - ліворуч
         self.fleet_direction = 1
 
+        #Підрахунок очок
+        self.alien_points = 50
+
     def increase_speed(self):
         """Up settings speed"""
         self.ship_speed *= self.speedup_scale
