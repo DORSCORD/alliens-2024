@@ -17,12 +17,13 @@ class Settings:
         self.bullet_color = (60, 60, 60)
         self.bulets_allowed = 3
 
-        #Settings alien
+        # Settings alien
         self.fleet_drop_speed = 10
-        #fleet_direction = 1 якщо флот рухается праворуч, -1 - ліворуч
+        # fleet_direction = 1 якщо флот рухается праворуч, -1 - ліворуч
 
         # Темпи прискорення гри
         self.speedup_scale = 1.1
+        self.score_scale = 1.5
 
         self.initialyze_dynamic_settings()
 
@@ -43,3 +44,4 @@ class Settings:
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+        self.alien_points = int(self.alien_points * self.score_scale)
