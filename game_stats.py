@@ -1,4 +1,4 @@
-class GameStats():
+class GameStats:
     """Відслідковування статистики гри"""
 
     def __init__(self, ai_game):
@@ -12,3 +12,4 @@ class GameStats():
     def reset_stats(self):
         """Ініціалізує статистику, що змінюється під час гри"""
         self.ships_left = self.settings.ship_limit
+        self.score = 0
