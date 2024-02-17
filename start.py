@@ -68,9 +68,12 @@ class AlienInvasion:
 
     def _check_bullet_collisons(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
         if collisions:
-            self.stats.score += self.settings.alien_points
+            for alines in collisions.values():
+                self.stats.score += self.settings.alien_points * len(alines)
             self.sb.prepare_score()
+
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
@@ -122,6 +125,7 @@ class AlienInvasion:
             self.settings.initialyze_dynamic_settings()
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prepare_score()
 
             # Очистка списків прибульців та снарядів
             self.aliens.empty()
