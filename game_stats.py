@@ -8,6 +8,9 @@ class GameStats:
 
         # Game started in no active 
         self.game_active = False
+
+        # Рекорд гри
+        self.hight_score = 0
     
     def reset_stats(self):
         """Ініціалізує статистику, що змінюється під час гри"""
