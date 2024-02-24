@@ -18,7 +18,7 @@ class Settings:
         self.bullet_color = (255, 0, 0) if self.dark_mode else (60, 60, 60)
         self.bulets_allowed = 3
 
-        # Settings alien
+        # Параметри прибульців
         self.fleet_drop_speed = 10
 
         # Параметри зірок
@@ -28,7 +28,6 @@ class Settings:
         self.star_color_limit = 256
         self.star_color_step = 0.15
         self.star_radius = 3
-        # fleet_direction = 1 якщо флот рухается праворуч, -1 - ліворуч
 
         # Темпи прискорення гри
         self.speedup_scale = 1.1
@@ -37,19 +36,19 @@ class Settings:
         self.initialyze_dynamic_settings()
 
     def initialyze_dynamic_settings(self):
-        """Ініціалізує налащтовує що змінює по ходу гри"""
+        """Ініціалізує налаштування, що змінюються по ходу гри"""
         self.ship_speed = 1.5
         self.bullet_speed = 1.5
         self.alien_speed = 1.0
-        
-        # fleet_direction = 1 якщо флот рухаєтся праворуч, -1, - ліворуч
+
+        # fleet_direction = 1 якщо флот рухається праворуч, -1 - ліворуч
         self.fleet_direction = 1
 
-        #Підрахунок очок
+        # Підрахунок очок
         self.alien_points = 50
 
     def increase_speed(self):
-        """Up settings speed"""
+        """Збільшує налаштування швидкості"""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale

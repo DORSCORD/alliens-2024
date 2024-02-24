@@ -25,8 +25,8 @@ class Star(Sprite):
 
     def update(self):
         """Оновлює зірку на екрані"""
-        self.z -= self.settings.star_speed
-        # Обчислює поточні координати зірки
+        self.z -= self.settings.star_speed  # Змінюємо її координату по Z
+        # Обчислюємо поточні координати зірки
         x = self.x * 256 / self.z
         y = self.y * 256 / self.z
 
@@ -36,23 +36,24 @@ class Star(Sprite):
             or x <= -self.screen_width // 2
             or x >= self.screen_width // 2
             or y <= -self.screen_height // 2
-            or y >- self.screen_height // 2
+            or y >= self.screen_height // 2
         ):
-            self.reset
+            self.reset()
 
         if (
             self.color < self.settings.star_color_limit
-        ):
+        ):  # Якщо колір не досяг максимуму яскравості, збільшуємо колір
             self.color += self.settings.star_color_step
 
         if self.color >= self.settings.star_color_limit:
-
+            # Якщо раптом колір став більшим за допустимий, то виставляємо його як 255
             self.color = self.settings.star_color_limit - 1
-        
+
+        # Відображаємо зірку на екрані
         x = round(self.x * 256 / self.z) + self.screen_width // 2
         y = round(self.y * 256 / self.z) + self.screen_height // 2
         pygame.draw.circle(
-            self.screen
+            self.screen,
             (self.color, self.color, self.color),
             (x, y),
             self.settings.star_radius,
