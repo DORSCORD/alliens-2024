@@ -13,9 +13,11 @@ class Alien(Sprite):
         self.settings = ai_game.settings
 
         # Завантаження зображення прибульця та визначення rect
-        self.image = pygame.image.load("Image/alien.bmp")
+        filename = (
+            "Image/alien-dark.bmp" if self.settings.dark_mode else "Image/alien.bmp"
+        )
+        self.image = pygame.image.load(filename)
         self.rect = self.image.get_rect()
-
         # Кожен новий прибулець з'являється в лівому верхньому куті екрану
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
@@ -24,7 +26,7 @@ class Alien(Sprite):
         self.x = float(self.rect.x)
 
     def check_edges(self):
-        """Retuen True if alien with end screen"""
+        """Returen True if alien with end screen"""
         screen_rect = self.screen.get_rect()
         if self.rect.right >= screen_rect.right or self.rect.left <= 0:
             return True
