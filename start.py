@@ -12,6 +12,7 @@ from button import Button
 from scoreboard import Scoreboard
 from star import Star
 
+
 class AlienInvasion:
     """Клас для управління ресурсами та поведінкою гри"""
 
@@ -25,7 +26,7 @@ class AlienInvasion:
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
-        # Створення екземпляру для зберегання ігрової статистики
+        # Створення екземпляру для зберігання ігрової статистики
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
 
@@ -39,7 +40,7 @@ class AlienInvasion:
 
         self._create_fleet()
 
-        #створюжмо кнопку play
+        # Створення кнопки Play
         self.play_button = Button(self, "Play")
 
     def run_game(self):
@@ -61,25 +62,28 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
-    
+
     def _check_aliens_bottom(self):
-        """Перевіряє чи досягли прибульці нижнього края екрана"""
+        """Перевіряє, чи досягли прибульці нижнього краю екрана"""
         screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= screen_rect.bottom:
                 self._ship_hit()
                 break
 
-    def _check_bullet_collisons(self):
+    def _check_bullet_alien_collisions(self):
+        """Обробка колазій снарядів з прибульцями"""
+        # Перевірка потраплянь у прибульців
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if collisions:
-            for alines in collisions.values():
-                self.stats.score += self.settings.alien_points * len(alines)
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prepare_score()
-            self.sb.check_hight_score()
+            self.sb.check_high_score()
 
         if not self.aliens:
+            # Знищення існуючих снарядів та створення нового флоту
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
@@ -114,10 +118,13 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
-        elif event.key == pygame.K_q:
+        elif event.key in (pygame.K_q, pygame.K_ESCAPE):
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key == pygame.K_p:
+            if not self.stats.game_active:
+                self._start_new_game()
 
     def _check_keyup_events(self, event):
         """Реагує на відпускання клавіш"""
@@ -125,29 +132,12 @@ class AlienInvasion:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
-        
+
     def _check_play_button(self, mouse_pos):
-        """Запустити нову гру при натиснення кнопки Play"""
+        """Запускає нову гру при натиснення кнопки Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Скидання ігрової статистики
-            self.settings.initialyze_dynamic_settings()
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            self.sb.prepare_score()
-            self.sb.prepare_level()
-            self.sb.prepare_ships()
-
-            # Очистка списків прибульців та снарядів
-            self.aliens.empty()
-            self.bullets.empty()
-
-            # Створення нового флоту і розміщення кораблів по центру
-            self._create_fleet()
-            self.ship.center_ship()
-
-            # Вказівка миші приховуєтся 
-            pygame.mouse.set_visible(False)
+            self._start_new_game()
 
     def _create_alien(self, alien_number, row_number):
         # Створення прибульця і розміщення його в ряду
@@ -186,32 +176,57 @@ class AlienInvasion:
             self.bullets.add(new_bullet)
 
     def _ship_hit(self):
-        """Обробляє зіткхнення коробля з прибульцем"""
-        if  self.stats.ships_left > 0:
+        """Обробляє зіткнення корабля з прибульцем"""
+        if self.stats.ships_left > 0:
+            # Зменшення ships_left
             self.stats.ships_left -= 1
             self.sb.prepare_ships()
-            #Очищення списків прибульців та снарядів
+
+            # Очищення списків прибульців та снарядів
             self.aliens.empty()
             self.bullets.empty()
 
-            # Add new fleet and centr ship
+            # Створення нового флоту та центрування корабля
             self._create_fleet()
             self.ship.center_ship()
 
-            #Pause
+            # Пауза
             sleep(0.5)
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
+
+    def _start_new_game(self):
+        """Запускає нову гру"""
+        # Скидання ігрової статистики
+        self.settings.initialyze_dynamic_settings()
+        self.stats.reset_stats()
+        self.stats.game_active = True
+        self.sb.prepare_score()
+        self.sb.prepare_level()
+        self.sb.prepare_ships()
+
+        # Очистка списків прибульців та снарядів
+        self.aliens.empty()
+        self.bullets.empty()
+
+        # Створення нового флоту і розміщення корабля по центру
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Вказівник миші приховується
+        pygame.mouse.set_visible(False)
 
     def _update_aliens(self):
         """Оновлює позиції всіх прибульців флоту"""
         self._check_fleet_edges()
         self.aliens.update()
 
+        # Перевірка колізій "прибулець-корабель"
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             self._ship_hit()
 
+        # Перевірка, чи не досягли прибульці краю екрана
         self._check_aliens_bottom()
 
     def _update_bullets(self):
@@ -222,9 +237,8 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
-        #Upadate shoot to alien
-        self._check_bullet_collisons()
 
+        self._check_bullet_alien_collisions()
 
     def _update_screen(self):
         """Оновлює зображення на екрані та відображає новий екран"""
@@ -235,10 +249,10 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
 
-        # Виведення інформації про результат
+        # Виведення інформації про результати
         self.sb.show_score()
 
-        #Кнопка Play відображается в тому випадку коли гра неактивна
+        # Кнопка Play відображається в тому випадку, коли гра неактивна
         if not self.stats.game_active:
             self.play_button.draw_button()
 
